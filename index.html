@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Battle - Dynamiser vos sites web avec Javascript</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;400&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="./assets/CSS/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.2/dist/flowbite.min.css" />
+</head>
+<body>
+      <div class="flex flex-col h-full w-full">
+        <div class="flex flex-col justify-center items-center border h-full space-y-4">
+            <h1 class="text-2xl tracking-wide font-bold leading-loose"><span id="playerOneName">Player 1</span> <span id="turnP1" class="text-orange-600"><i class="fa-solid fa-circle-dot"></i></span></h1>
+            <h2 class="text-xl leading-loose">Current Score : <span id="currentScoreP1">0</span></h2>
+            <h2 class="text-xl leading-loose">Total Score : <span id="totalScoreP1">0</span></h2>
+        </div>
+        <div class="flex justify-around items-center border h-full">
+            <div class="flex flex-col items-center">
+                <div>
+                    <button id="newGameBTN" class="w-32 text-lg border p-1 m-2 hover:shadow hover:shadow-current rounded"><i class="fa-solid fa-plus"></i> New Game</button>
+                </div>
+                <div>
+                    <button id="rulesBTN" class="w-32 text-lg border p-1 m-2 hover:shadow hover:shadow-current rounded" type="button"><i class="fa-solid fa-scroll"></i> Rules</button>
+                </div>
+            </div>
+            <div>
+                <img id="diceIMG" class="w-32" src="./assets/IMG/dice1.png" alt="">
+            </div>
+            <div class="flex flex-col items-center">
+                <div>
+                    <button id="rollDiceBTN" class="disable-BTN w-32 text-lg border p-1 m-2 hover:shadow hover:shadow-current rounded"><i class="fa-solid fa-arrows-rotate"></i> Roll Dice</button>
+                </div>
+                <div>
+                    <button id="holdScore" class="disable-BTN w-32 text-lg border p-1 m-2 hover:shadow hover:shadow-current rounded"><i class="fa-solid fa-angles-down"></i> Hold Score</button>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col justify-center items-center border h-full space-y-4">
+            <h1 class="text-2xl tracking-wide font-bold leading-loose"><span id="playerTwoName">Player 2</span> <span id="turnP2" class="text-orange-600 hidden"><i class="fa-solid fa-circle-dot"></i></span></h1>
+            <h2 class="text-xl leading-loose">Current Score : <span id="currentScoreP2">0</span></h2>
+            <h2 class="text-xl leading-loose">Total Score : <span id="totalScoreP2">0</span></h2>
+        </div>
+    </div>
+
+    <!-- Modal Rules START -->
+    <div id="modal-rules" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full">
+        <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <button type="button" class="close-modal-rules absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="p-6 text-center">
+                    <h1 class="text-2xl tracking-wide font-bold leading-loose">Rules</h1>
+                    <p class="leading-relaxed">Two players on the same screen compete in turn.</p><br>
+                    <p class="leading-relaxed">Each player can throw the dice as many times as he wishes and thus accumulates the scores obtained. If he wishes to save his score, the player can click on the "Hold" button and the turn passes to the other player.</p><br>
+                    <p class="leading-relaxed">If the die score is 1, the player's current accumulated score is lost and their turn passes.</p><br>
+                    <p class="leading-relaxed">The first player to reach 100 points wins the game.</p><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Rules END -->
+
+    <!-- Modal Winner START -->
+    <div id="modal-win" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full">
+        <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <button type="button" class="close-modal-win absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="p-6 text-center">
+                    <h1 class="text-2xl tracking-wide font-bold leading-loose">Winner !!</h1>
+                    <p class="leading-relaxed">Congratulations <span id="winnerName">PLAYER</span>, you won!</p><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Winner END -->
+
+    <!-- Sounds -->
+    <audio id="buzzSound" src="./assets/Sounds/buzz.wav"></audio>
+    <audio id="diceSound" src="./assets/Sounds/dice.wav"></audio>
+    <audio id="winSound" src="./assets/Sounds/win.wav"></audio>
+    <audio id="holdSound" src="./assets/Sounds/hold.wav"></audio>
+
+    <script src="./assets/JS/script.js"></script>
+    <script src="https://unpkg.com/flowbite@1.5.2/dist/flowbite.js"></script>
+    <script src="https://kit.fontawesome.com/59cf9aaed3.js" crossorigin="anonymous"></script>
+</body>
+</html>
