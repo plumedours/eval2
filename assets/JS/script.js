@@ -112,12 +112,12 @@ document.getElementById("rollDiceBTN").addEventListener("click", () => {
         if (randomDiceValue === 1) {
             buzzSound(); // play sound buzzer
             whoseTurn();
-            currentScore = 0; // score à 0 si la valeur du dé est égale à 1
             if (playerTurn === 1) {
                 document.getElementById("currentScoreP1").textContent = currentScore; // affichage du score P1
             } else if (playerTurn === 2) {
                 document.getElementById("currentScoreP2").textContent = currentScore; // affichage du score P2
             }
+            resetCurrentScore(); // score à 0 si la valeur du dé est égale à 1
         } else {
             currentScore += randomDiceValue; // addition du score de la valeur du dé
             if (playerTurn === 1) {
@@ -126,6 +126,7 @@ document.getElementById("rollDiceBTN").addEventListener("click", () => {
                 document.getElementById("currentScoreP2").textContent = currentScore; // affichage du score P2
             }
         };
+
     };
 
     function changeIMG () {
