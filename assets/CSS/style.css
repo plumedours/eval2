@@ -5,3 +5,7 @@ body, html {
     margin: 0px;
     height: 100%;
 }
+
+.bgColor {
+    background-color: #222f4c;
+}
